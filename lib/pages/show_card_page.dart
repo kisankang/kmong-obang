@@ -20,7 +20,7 @@ class ShowCardPage extends StatefulWidget {
 }
 
 class _ShowCardPageState extends State<ShowCardPage> {
-  List<CardModel> cardList = [];
+  List<CardModel> cardPoolList = [];
   List<CardController> selectedCardControllerList = [];
   List<FlipCardController> selectedCardFlipControllerList = [];
   mountedSetState() {
@@ -33,13 +33,13 @@ class _ShowCardPageState extends State<ShowCardPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    cardList = getCardList(widget.howMany);
+    cardPoolList = getCardList(widget.howMany);
 
     for (var i = 0; i < widget.showNumber; i++) {
       int selectedIndex = Random().nextInt(widget.howMany - i);
       selectedCardControllerList.add(
         CardController(
-          cardModel: cardList[selectedIndex],
+          cardModel: cardPoolList[selectedIndex],
           isBig: false,
         ),
       );
@@ -57,7 +57,7 @@ class _ShowCardPageState extends State<ShowCardPage> {
         }
       });
 
-      cardList.remove(cardList[selectedIndex]);
+      cardPoolList.remove(cardPoolList[selectedIndex]);
     }
   }
 
@@ -80,6 +80,11 @@ class _ShowCardPageState extends State<ShowCardPage> {
   Widget build(BuildContext context) {
     debugPrint("### ShowCardPage is built");
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+      ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           Background(
@@ -88,32 +93,41 @@ class _ShowCardPageState extends State<ShowCardPage> {
                   : widget.showNumber == 2
                       ? bgTile_2
                       : bgTile_3),
-          AppBar(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-          ),
-          Center(
-            child: !showBig
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: selectedCardControllerList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: index == 0 ? 0 : 10),
-                        child: CardWidget(
-                          cardController: selectedCardControllerList[index],
-                          flipCardController:
-                              selectedCardFlipControllerList[index],
-                        ),
-                      );
-                    })
-                : CardWidget(
+          !showBig
+              ? Center(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: selectedCardControllerList.length,
+                      itemBuilder: (context, index) {
+                        double padding = 10;
+                        double width = (MediaQuery.of(context).size.width -
+                                padding *
+                                    (selectedCardControllerList.length + 1)) /
+                            selectedCardControllerList.length;
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            left: index == 0 ? padding : 0,
+                            right: padding,
+                            top: 0,
+                            bottom: 0,
+                          ),
+                          child: CardWidget(
+                            cardController: selectedCardControllerList[index],
+                            flipCardController:
+                                selectedCardFlipControllerList[index],
+                            width: width,
+                          ),
+                        );
+                      }),
+                )
+              : Positioned.fill(
+                  child: CardWidget(
                     cardController: selectedCardControllerList[showBigIndex!],
                     isBig: true,
                   ),
-          ),
+                ),
         ],
       ),
     );

@@ -27,12 +27,16 @@ class CardWidget extends StatefulWidget {
   final CardController cardController;
   final FlipCardController? flipCardController;
   final bool isBig;
+  final double? width;
+  final double? height;
   const CardWidget({
     super.key,
     required this.cardController,
     this.flipCardController,
     this.isBig = false,
-  });
+    this.width,
+    this.height,
+  }) : assert(width != null || height != null || isBig != false);
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -67,12 +71,14 @@ class _CardWidgetState extends State<CardWidget> {
         },
         child: CustomImage(
           imagePath: widget.cardController.cardModel.imagePath,
-          width: 80,
+          width: widget.width,
+          height: widget.height,
         ),
       ),
       front: CustomImage(
         imagePath: widget.cardController.cardModel.backImagePath,
-        width: 80,
+        width: widget.width,
+        height: widget.height,
       ),
     );
   }
@@ -81,10 +87,15 @@ class _CardWidgetState extends State<CardWidget> {
         onTap: () {
           widget.cardController.onTapCard();
         },
-        child: CustomImage(
-          imagePath: widget.cardController.cardModel.imagePath,
-          width: widget.isBig ? 300 : 80,
-        ),
+        child: widget.isBig
+            ? CustomImage(
+                imagePath: widget.cardController.cardModel.imagePath,
+              )
+            : CustomImage(
+                imagePath: widget.cardController.cardModel.imagePath,
+                width: widget.width,
+                height: widget.height,
+              ),
       );
   @override
   Widget build(BuildContext context) {

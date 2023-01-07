@@ -2,9 +2,9 @@ import 'package:obang/models/cardModel.dart';
 import 'package:obang/utils/image_path.dart';
 
 CardModel card1 = CardModel(smallImagePath: smallCard_1, imagePath: card_1);
-CardModel card3 = CardModel(smallImagePath: smallCard_2, imagePath: card_2);
-CardModel card4 = CardModel(smallImagePath: smallCard_3, imagePath: card_3);
-CardModel card2 = CardModel(smallImagePath: smallCard_4, imagePath: card_4);
+CardModel card2 = CardModel(smallImagePath: smallCard_2, imagePath: card_2);
+CardModel card3 = CardModel(smallImagePath: smallCard_3, imagePath: card_3);
+CardModel card4 = CardModel(smallImagePath: smallCard_4, imagePath: card_4);
 CardModel card5 = CardModel(smallImagePath: smallCard_5, imagePath: card_5);
 CardModel card6 = CardModel(smallImagePath: smallCard_6, imagePath: card_6);
 CardModel card7 = CardModel(smallImagePath: smallCard_7, imagePath: card_7);
@@ -16,13 +16,13 @@ List<CardModel> cardData = [
   card1,
   card3,
   card4,
+  card7,
+  card10,
   card2,
   card5,
   card6,
-  card7,
   card8,
   card9,
-  card10,
 ];
 
 List<CardModel> getCardList(int num) {
